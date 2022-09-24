@@ -1,0 +1,138 @@
+Ders 30 un sonunda SQL sorgu metni
+select id,haber from haberler where haber like "%dene%" // haber sutunu içinde dene olanları bul
+
+
+Ders31 
+CREATE DATABASE egitim DEFAULT CHARACTER SET utf8 COLLATE utf8_turkish_ci; // egitim adında türkçe karakter
+destekli veri tabanı oluşturma
+
+USE egitim;  // use veri tabanını seçer// egitim isimli veri tabanın gider orada çalıştıgını gösterir.
+
+DROP DATABASE egitim; egitim isimli veri tabanını siler.
+Tablo oluşturma:
+1-)CREATE TABLE egitimler (       /// oluşturulacak tablonun adı
+	id tinyint PRIMARY KEY AUTO_INCREMENT, /// id isimli sutun birinci otomatik artsın
+    	egitimad varchar(250) NOT null DEFAULT 'Boş', // egitimad varcar karakterli deger girilmeyince boş yazsın
+    	egitimacıklama text     //egitimacıklama isimli sutun oluşturulur.
+);
+
+2-) CREATE TABLE ogrenciler(    /// ögrenciler adlı yeni tablo oluşturdu
+	id tinyint PRIMARY KEY AUTO_INCREMENT,
+	tckimlikno int(11)unique not null,
+	adsoyad varchar(250) not null,
+	aciklama text,
+	kayıttarih date not null default '2022-06-17'
+);
+
+3-)RENAME TABLE egitimler TO egitimler_yeni; // tablo ismini degiştirme
+
+4-)ALTER TABLE ogrenciler_yeni CHANGE adsoyad ogr_adsoyad varchar(110); // tablo içindeki sutunların ismini degiştirme
+
+5-)ALTER TABLE ogrenciler_yeni MODIFY ogr_adsoyad varchar(150) not null; -- tablo içindeki süyünün karakter sayısını degiştirmek için.
+
+6-)ALTER TABLE ogrenciler_yeni ADD(   ///  tabloya sutun ekleme
+	sinav1 tinyint not null default '0',
+	sinav2 tinyint not null default '0' 
+);
+
+
+7-)ALTER TABLE ogrenciler_yeni DROP sinav1;  // tablodan istenen sutun silinir.
+ALTER TABLE ogrenciler_yeni DROP sinav2; 
+
+8-)TRUNCATE TABLE egitimler;  // tablonu içini boşaltır otomatik atan primaty degeri sıfırlar
+
+9-) REPAIR TABLE egitimler;  /// onarılmak istenen tablo onarmak için
+
+10-)DROP TABLE ögrenciler_yeni; // belirtilen tablo içi ve kendisi silinir.
+.
+11-)INSERT INTO ogrenciler (id,tckimlikno,adsoyad) VALUES ("",123456789,"Esat KÖRÜKCÜ"); tabloya içerik ekleme
+
+12-)INSERT INTO ogrenciler (id,tckimlikno,adsoyad) VALUES ("",123456789,"veli kemal"),("",1224565,"ahmet ali"); iki tane veri ekleme
+
+13-)INSERT INTO ogrenciler  VALUES ("",123456789,"Esat KÖRÜKCÜ"); // tabloya bu şekilde veri eklenir.
+
+14-)UPDATE ogrenciler SET adsoyad="sedat SELİM" Where id=1; //tablodaki ıd den istenen sütündaki kayıt güncellenir.
+
+15-)UPDATE ogrenciler SET kayıttarih="2022-06-19";  // tablodaki tüm tarihleri2022-06-19 yazar
+
+16-)UPDATE ogrenciler SET adsoyad="Ayşe TÜRKMEN",kayıttarih="2022-06-31",tckimlikno="145278" WHERE id=3; // tablodaki birden fazla sutunu değiştirir.
+
+17-)DELETE FROM ogrenciler WHERE id=1; // belirtilen id deki kaydı sil.
+
+Ders33
+
+1-)SELECT * From ogrenciler; // tablodaki tüm kayıtları getirir.
+
+2-)SELECT id,tckimlikno From ogrenciler; // tablodaki id ve tc kimlik olan kısımları göster.
+
+3-)SELECT * From ogrenciler where id=4; // tablodaki id si dört olanı kaydın tüm bilgilerini gösterir.
+
+4-)SELECT * From ogrenciler where id<7; // tablodaki id si 7 den küçük kayıtlaeın tüm bilgilerini gösterir.
+
+5-)SELECT * From ogrenciler where (id>2 && adsoyad!="Ahmet"); tablodaki id si 2 den büyük ve 
+ad ve soyadı ahmettten farlı olan kayıtların tüm bilgilerini gösterir.
+
+6-)SELECT * From ogrenciler ORDER BY tckimlikno ASC; // tablodaki  bilgileri tckimlik no daki göre
+küçükten veya baştan büyüge veya sona dogru sıralar
+
+7-)SELECT * From ogrenciler ORDER BY tckimlikno DESC; // tersten sıralar
+
+8-)SELECT * From ogrenciler ORDER BY kayıttarih ASC, adsoyad DESC; // iki tane kayıt numarası aynı olan var
+bunu için linci bir sutunu ismi olan adsoyad ile onları terten sıralamış olduk
+
+9-)SELECT * From ogrenciler LIMIT 2; // sadece iki kayıt getir.
+
+10-)SELECT tckimlikno,kayıttarih From ogrenciler WHERE (id>1) ORDER by kayıttarih ASC LIMIT 2; // tckimlik numarasından ve kayıtnumarasından
+id si birden büyük kayıt tarihi baştan sona dogru ve iki kaydı göster
+
+11-)SELECT * FROM ogrenciler LIMIT 2,3; ikinci kayıttan sonra üç tane getir.
+
+12-)SELECT * FROM ogrenciler ORDER by RAND() LIMIT 3; // tablodan rastgele sıralama ile üç kayıt göster
+
+13-)SELECT DISTINCT kayıttarih FROM ogrenciler ORDER by RAND();// tabloda kaydı aynı olan ikisinden 
+bir tanesini rastgele yazdırır.
+
+14-)SELECT * FROM ogrenciler GROUP BY kayıttarih ; // tablodaki aynı degerdeki kayıtları grupladı
+tek olarak yazdı
+
+15-)SELECT COUNT(*) FROM ogrenciler; // ögreenciler tablosundaki toplam kayıt sayısını getirir.
+
+16-)SELECT SUM(tckimlikno) AS toplam FROM ogrenciler;// tc kimlik no daki degerleri topladı
+toplam içine attı çıktıyı toplam yazdı altında toplam deger
+
+17-)SELECT adsoyad,SUM(tckimlikno) AS toplam FROM ogrenciler GROUP BY adsoyad; // hem adsoyad hem tc kimlik no
+
+18-)SELECT adsoyad,AVG(tckimlikno) AS toplam FROM ogrenciler GROUP BY adsoyad;// avg ortalama alır.
+
+19-)SELECT adsoyad,MIN(tckimlikno) FROM ogrenciler LIMIT 1; // tablodaki minimum degerli olan kayıttan
+bir tane getirir 
+
+20-)SELECT adsoyad,MAX(tckimlikno) FROM ogrenciler LIMIT 1; // tablodaki maximum degeri getirir
+
+21-)SELECT MAX(tckimlikno) as enbuyuk FROM ogrenciler; // tablodaki maximum degeri en büyük ismi altında
+yazar.
+
+22-)SELECT MIN(tckimlikno) as sonuc FROM ogrenciler; // tablodaki minimum degeri sonuc ismi altında yazar
+
+min yerine sum yazarsan toplamı / avg yzarsan ortalamasını verir
+
+
+
+Ders34
+
+1-)SELECT o.adsoyad e.egitimad FROM ogrenciler AS o LEFT JOIN egitimler AS e ON o.id=e.ogrenci;
+// ogrenciler ve egitimler tablosu birleştirilmiştir. o ve e tablo isimleri kısaltması uzunda yazılabilir
+// ogrenciler tablosunun şd si ile egitimler tablosunun ogrenci kısmı ilişkilendirilmiştir.
+//herhabgi bir egitim almayan ögrencilerinden listelendigidir. kaynakta olup hedefte olamasa da birleştirilir.
+
+
+
+2-)SELECT o.adsoyad e.egitimad FROM ogrenciler AS o INNER JOIN egitimler AS e ON o.id=e.ogrenci;
+//hem kaynak tabloda ham hedef tabloda ilişkili olan verileri birleştirir.
+
+3-)SELECT o.adsoyad e.egitimad FROM ogrenciler AS o RIGHT JOIN egitimler AS e ON o.id=e.ogrenci;
+// kaynakta olmayıp hedefte olursada birleştirilir.
+
+
+
+
