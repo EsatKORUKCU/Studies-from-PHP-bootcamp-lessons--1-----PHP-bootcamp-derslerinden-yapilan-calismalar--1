@@ -1,2 +1,3 @@
-# PHP-bootcamp-derslerden-yap-lan-al-malar-1
-PHP bootcamp derslerden yapılan çalışmalar 1
+# 
+Studies-from-PHP-bootcamp-lessons--1 <-----> PHP-bootcamp-derslerinden-yapilan-calismalar--1
+
